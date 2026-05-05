@@ -1,3 +1,6 @@
+// 🔑 CONFIG (WAJIB ISI)
+const BASESCAN_API_KEY = "XH98XIQ5NYNWG7Y91JCKFD4TUYTTH4143W";
+
 // 🚀 MAIN FUNCTION
 async function loadData() {
   const address = document.getElementById("wallet").value.trim();
@@ -5,7 +8,7 @@ async function loadData() {
   const summaryBox = document.getElementById("summary");
   const insightBox = document.getElementById("insight");
 
-  // ❗ VALIDASI INPUT
+  // ❗ VALIDASI
   if (!address || !address.startsWith("0x") || address.length < 10) {
     result.innerHTML = "❌ Please enter a valid wallet address";
     return;
@@ -16,13 +19,19 @@ async function loadData() {
   summaryBox.innerHTML = "";
   insightBox.innerHTML = "🤖 Preparing AI analysis...";
 
-  const url = `https://api.basescan.org/api?module=account&action=txlist&address=${address}&sort=desc`;
+  const url = `https://api.basescan.org/api?module=account&action=txlist&address=${address}&sort=desc&apikey=${BASESCAN_API_KEY}`;
 
   try {
     const res = await fetch(url);
     const data = await res.json();
 
-    // ❗ VALIDASI DATA
+    // ❗ HANDLE ERROR BASESCAN
+    if (!data || data.status === "0") {
+      result.innerHTML = "⚠️ Failed to fetch data (check API key)";
+      insightBox.innerHTML = "";
+      return;
+    }
+
     if (!data.result || data.result.length === 0) {
       result.innerHTML = "⚠️ No transactions found";
       insightBox.innerHTML = "";
@@ -95,7 +104,7 @@ async function loadData() {
 }
 
 
-// 🤖 AI FUNCTION (SAFE VIA BACKEND)
+// 🤖 AI FUNCTION (SAFE BACKEND)
 async function getAIInsight(summary) {
   try {
     const res = await fetch("/api/ai", {
@@ -103,11 +112,7 @@ async function getAIInsight(summary) {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        total: summary.total,
-        incoming: summary.incoming,
-        outgoing: summary.outgoing
-      })
+      body: JSON.stringify(summary)
     });
 
     if (!res.ok) {
@@ -129,7 +134,7 @@ async function getAIInsight(summary) {
 }
 
 
-// 🎨 RISK COLOR FUNCTION
+// 🎨 RISK COLOR
 function getRiskColor(text) {
   if (!text) return "white";
 
