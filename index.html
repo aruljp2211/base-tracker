@@ -1,91 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Base Wallet Tracker 🔵</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Base Insight Engine 🔵</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0d1117;
-      color: white;
-      text-align: center;
-      margin: 0;
-      padding: 20px;
-    }
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: radial-gradient(circle at top, #0d1117, #020617);
+  color: white;
+  text-align: center;
+  margin: 0;
+  padding: 20px;
+}
 
-    h2 {
-      margin-bottom: 5px;
-    }
+h1 {
+  font-size: 28px;
+  margin-bottom: 5px;
+}
 
-    p.subtitle {
-      color: #8b949e;
-      margin-bottom: 20px;
-    }
+.subtitle {
+  color: #8b949e;
+  margin-bottom: 25px;
+}
 
-    input {
-      padding: 12px;
-      width: 300px;
-      border-radius: 6px;
-      border: none;
-      outline: none;
-      margin-right: 10px;
-    }
+.container {
+  max-width: 600px;
+  margin: auto;
+}
 
-    button {
-      padding: 12px 16px;
-      border: none;
-      border-radius: 6px;
-      background: #238636;
-      color: white;
-      cursor: pointer;
-    }
+input {
+  padding: 14px;
+  width: 65%;
+  border-radius: 8px;
+  border: none;
+  background: #161b22;
+  color: white;
+}
 
-    button:hover {
-      background: #2ea043;
-    }
+button {
+  padding: 14px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(90deg, #238636, #2ea043);
+  color: white;
+  cursor: pointer;
+  margin-left: 8px;
+}
 
-    #summary, #insight {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 8px;
-      background: #161b22;
-    }
+button:hover {
+  opacity: 0.9;
+}
 
-    #result {
-      margin-top: 20px;
-    }
+.card {
+  background: #161b22;
+  border-radius: 12px;
+  padding: 15px;
+  margin-top: 20px;
+  box-shadow: 0 0 15px rgba(0, 255, 150, 0.1);
+  text-align: left;
+}
 
-    .tx {
-      margin: 10px auto;
-      padding: 15px;
-      border-radius: 8px;
-      background: #161b22;
-      max-width: 500px;
-      text-align: left;
-    }
+.tx {
+  border-bottom: 1px solid #30363d;
+  padding: 10px 0;
+}
 
-    .tx p {
-      margin: 5px 0;
-      font-size: 14px;
-    }
-  </style>
+.tx:last-child {
+  border-bottom: none;
+}
+
+.glow {
+  color: #00ffcc;
+}
+</style>
 </head>
 
 <body>
 
-  <h2>Base Wallet Tracker 🔵</h2>
-  <p class="subtitle">Track wallet activity + AI insights</p>
+<div class="container">
+  <h1 class="glow">Base Insight Engine 🔵</h1>
+  <p class="subtitle">Turning onchain activity into readable insights</p>
 
   <input id="wallet" placeholder="Enter wallet address">
-  <button onclick="loadData()">Check</button>
+  <button onclick="loadData()">Analyze</button>
 
-  <div id="summary"></div>
-  <div id="insight"></div>
-  <div id="result"></div>
+  <div id="summary" class="card"></div>
+  <div id="insight" class="card"></div>
+  <div id="result" class="card"></div>
+</div>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 
 </body>
 </html>
