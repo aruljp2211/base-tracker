@@ -1,18 +1,91 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Base Wallet Tracker</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Base Wallet Tracker 🔵</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0d1117;
+      color: white;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      margin-bottom: 5px;
+    }
+
+    p.subtitle {
+      color: #8b949e;
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 12px;
+      width: 300px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+      margin-right: 10px;
+    }
+
+    button {
+      padding: 12px 16px;
+      border: none;
+      border-radius: 6px;
+      background: #238636;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #2ea043;
+    }
+
+    #summary, #insight {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      background: #161b22;
+    }
+
+    #result {
+      margin-top: 20px;
+    }
+
+    .tx {
+      margin: 10px auto;
+      padding: 15px;
+      border-radius: 8px;
+      background: #161b22;
+      max-width: 500px;
+      text-align: left;
+    }
+
+    .tx p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+  </style>
 </head>
+
 <body>
 
-<h2>Base Wallet Activity 🔵</h2>
+  <h2>Base Wallet Tracker 🔵</h2>
+  <p class="subtitle">Track wallet activity + AI insights</p>
 
-<input id="wallet" placeholder="Enter wallet address">
-<button onclick="loadData()">Check</button>
+  <input id="wallet" placeholder="Enter wallet address">
+  <button onclick="loadData()">Check</button>
 
-<div id="result"></div>
+  <div id="summary"></div>
+  <div id="insight"></div>
+  <div id="result"></div>
 
-<script src="script.js"></script>
+  <script src="script.js"></script>
+
 </body>
 </html>
