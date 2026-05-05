@@ -1,18 +1,20 @@
+// 🚀 MAIN FUNCTION
 async function loadData() {
   const address = document.getElementById("wallet").value.trim();
   const result = document.getElementById("result");
   const summaryBox = document.getElementById("summary");
   const insightBox = document.getElementById("insight");
 
-  // ❗ VALIDASI
-  if (!address || !address.startsWith("0x")) {
-    result.innerHTML = "❌ Enter valid wallet address";
+  // ❗ VALIDASI INPUT
+  if (!address || !address.startsWith("0x") || address.length < 10) {
+    result.innerHTML = "❌ Please enter a valid wallet address";
     return;
   }
 
-  result.innerHTML = "⏳ Loading...";
+  // 🔄 RESET UI
+  result.innerHTML = "⏳ Loading transactions...";
   summaryBox.innerHTML = "";
-  insightBox.innerHTML = "";
+  insightBox.innerHTML = "🤖 Preparing AI analysis...";
 
   const url = `https://api.basescan.org/api?module=account&action=txlist&address=${address}&sort=desc`;
 
@@ -20,8 +22,10 @@ async function loadData() {
     const res = await fetch(url);
     const data = await res.json();
 
+    // ❗ VALIDASI DATA
     if (!data.result || data.result.length === 0) {
       result.innerHTML = "⚠️ No transactions found";
+      insightBox.innerHTML = "";
       return;
     }
 
@@ -54,16 +58,19 @@ async function loadData() {
     `;
 
     // 🤖 AI ANALYSIS
-    insightBox.innerHTML = "🤖 Running AI analysis...";
+    insightBox.innerHTML = "🤖 Analyzing wallet with AI...";
 
-    const aiResult = await getAIInsight({ total, incoming, outgoing });
+    const aiText = await getAIInsight({
+      total,
+      incoming,
+      outgoing
+    });
 
-    // 🎨 COLOR BASED ON RISK
-    const riskColor = getRiskColor(aiResult);
+    const riskColor = getRiskColor(aiText);
 
     insightBox.innerHTML = `
       <h3>🤖 AI Analysis</h3>
-      <pre style="color:${riskColor}">${aiResult}</pre>
+      <pre style="color:${riskColor}">${aiText}</pre>
     `;
 
     // 📜 TRANSACTIONS
@@ -83,54 +90,46 @@ async function loadData() {
   } catch (err) {
     console.error(err);
     result.innerHTML = "❌ Error loading data";
+    insightBox.innerHTML = "⚠️ AI unavailable";
   }
 }
 
 
-// 🤖 AI ENGINE
+// 🤖 AI FUNCTION (SAFE VIA BACKEND)
 async function getAIInsight(summary) {
-  const apiKey = "PASTE_API_KEY_KAMU";
-
-  const prompt = `
-You are an expert onchain analyst AI.
-
-Analyze this wallet:
-
-Total transactions: ${summary.total}
-Incoming: ${summary.incoming}
-Outgoing: ${summary.outgoing}
-
-Return:
-
-Insight: (1 short sentence)
-Type: (Trader / Holder / Bot / Normal)
-Risk: (Low / Medium / High)
-Score: (0-100)
-`;
-
   try {
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+    const res = await fetch("/api/ai", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + apiKey
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [{ role: "user", content: prompt }]
+        total: summary.total,
+        incoming: summary.incoming,
+        outgoing: summary.outgoing
       })
     });
 
+    if (!res.ok) {
+      return "⚠️ AI request failed";
+    }
+
     const data = await res.json();
-    return data.choices?.[0]?.message?.content || "No AI insight";
+
+    if (!data.result) {
+      return "⚠️ No AI insight returned";
+    }
+
+    return data.result;
 
   } catch (err) {
-    return "AI unavailable";
+    console.error("AI error:", err);
+    return "❌ AI unavailable";
   }
 }
 
 
-// 🎨 RISK COLOR
+// 🎨 RISK COLOR FUNCTION
 function getRiskColor(text) {
   if (!text) return "white";
 
